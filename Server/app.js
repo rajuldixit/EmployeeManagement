@@ -1,14 +1,12 @@
 const createError = require("http-errors");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
 const express = require("express");
-const app = express();
 const path = require("path");
-const bcrypt = require("bcrypt");
+const cors = require("cors");
 const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
 const methodOverride = require("method-override");
+
 const {
   checkNotAuthenticated,
   checkAuthenticated
@@ -16,11 +14,13 @@ const {
 
 const dotenv = require("dotenv").config();
 
-const indexRouter = require("./routes/index");
 const userLogin = require("./routes/userLogin");
 const userLogout = require("./routes/userLogout");
 
+const app = express();
+
 app.set("view-engine", "ejs");
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(flash());
@@ -42,7 +42,8 @@ app.get("/", checkAuthenticated, (req, res) => {
 //   res.send("<h1>Success</h1>");
 // });
 app.get("/login", checkNotAuthenticated, (req, res) => {
-  res.render("login.ejs");
+  // res.render("login.ejs");
+  res.send("<h1>hello</h1>");
 });
 
 app.use("/login", checkNotAuthenticated, userLogin);
