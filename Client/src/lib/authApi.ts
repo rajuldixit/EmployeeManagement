@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
 import { IUser, IUserLogin } from "../utils/interfaces";
+import Cookies from "js-cookie";
 
 const useAuthApi = () => {
   const [user, setUser] = useState<IUser | null>(null);
@@ -15,9 +16,22 @@ const useAuthApi = () => {
         email: user.email,
         password: user.password
       });
-      setUser(resp.data);
+      console.log(resp);
+      Cookies.set("accessToken", resp.data.accessToken, {
+        expires: 7
+      });
+      Cookies.set("refreshToken", resp.data.refreshToken, {
+        expires: 7
+      });
+      Cookies.set("user", resp.data.user.firstname, {
+        expires: 7
+      });
+      setUser(resp.data.user);
     } catch (err) {
-      setErrorMessage("Error in fetch");
+      const error = err as AxiosError;
+      const errorData = error?.response?.data || "error";
+      console.log(errorData);
+      setErrorMessage(errorData as string);
     } finally {
       setActionExecuting(false);
     }
