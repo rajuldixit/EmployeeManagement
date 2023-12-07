@@ -47,7 +47,7 @@ const userLogin = async (req, res) => {
   });
   console.log("user", req.body);
   if (user == null) {
-    return res.status(404).json({ message: "No user with that email" });
+    return res.status(404).json("No user with that email");
   }
 
   try {
@@ -61,12 +61,10 @@ const userLogin = async (req, res) => {
         refreshToken
       });
     } else {
-      return res
-        .status(400)
-        .json({ message: "Username or password incorrect!" });
+      return res.status(400).json("Username or password incorrect!");
     }
   } catch (e) {
-    return res.status(400).json({ message: e.message });
+    return res.status(400).json(e.message);
   }
 };
 
