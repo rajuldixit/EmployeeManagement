@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
 import { IUser, IUserLogin } from "../utils/interfaces";
 import Cookies from "js-cookie";
@@ -11,12 +11,12 @@ const useAuthApi = () => {
 
   const getUser = async (user: IUserLogin) => {
     setActionExecuting(true);
-    console.log(user);
     try {
       const resp = await axios.post(`${base_url}login`, {
         email: user.email,
         password: user.password
       });
+      console.log(resp);
       Cookies.set("accessToken", resp.data.accessToken, {
         expires: 7
       });
@@ -28,7 +28,10 @@ const useAuthApi = () => {
       });
       setUser(resp.data.user);
     } catch (err) {
-      setErrorMessage("Error in fetch");
+      const error = err as AxiosError;
+      const errorData = error?.response?.data || "error";
+      console.log(errorData);
+      setErrorMessage(errorData as string);
     } finally {
       setActionExecuting(false);
     }
