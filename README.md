@@ -1,5 +1,20 @@
 # EmployeeManagement
 
+## Folder Structure
+#### Client
+##### 1. pages
+##### 2. hooks
+##### 3. lib
+##### 4. utils
+##### 5. components
+
+#### Server
+##### 1. controller
+##### 2. routes
+##### 3. models
+##### 4. db
+##### 5. middlewares
+
 ## Tech Used :
 #### 1. React js
 #### 2. Node js
