@@ -23,7 +23,7 @@ const useAuthApi = () => {
       Cookies.set("refreshToken", resp.data.refreshToken, {
         expires: 7
       });
-      Cookies.set("user", resp.data.user, {
+      Cookies.set("user", resp.data.user.firstname, {
         expires: 7
       });
       setUser(resp.data.user);
