@@ -29,6 +29,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { IUser } from "../utils/interfaces";
+import { useNavigate } from "react-router-dom";
 // import { Search } from "react-router";
 
 const HeaderPaper = styled(Paper)(({ theme }) => ({
@@ -87,6 +88,7 @@ const Header = () => {
   const anchorRef = useRef<HTMLButtonElement>(null);
   const anchorEmpRef = useRef<HTMLButtonElement>(null);
   const anchorProjectsRef = useRef<HTMLButtonElement>(null);
+  const navigate = useNavigate();
 
   const handleEmployeeToggle = () => {
     setEmployeeOpen((prevOpen) => !prevOpen);
@@ -167,7 +169,47 @@ const Header = () => {
     prevProjectOpen.current = openProjects;
   }, [openProjects]);
 
+  const employeeAction = (
+    actionType: string,
+    e: Event | React.SyntheticEvent
+  ) => {
+    if (actionType == "ONBOARD") {
+      navigate("/onboarding");
+    } else if (actionType == "UPDATE") {
+      navigate("/updateEmployee");
+    }
+    handleEmployeeClose(e);
+  };
+
+  const handleProjectsActions = (
+    actionType: string,
+    e: Event | React.SyntheticEvent
+  ) => {
+    if (actionType == "NEW") {
+      navigate("/newProject");
+    } else if (actionType == "UPDATE") {
+      navigate("/updateProject");
+    } else if (actionType == "VIEW") {
+      navigate("/viewProject");
+    }
+    handleProjectsClose(e);
+  };
+
+  const handleMyProfileAction = (e: Event | React.SyntheticEvent) => {
+    navigate("/profile");
+    handleClose(e);
+  };
+
+  const handleLogout = () => {};
+  const handleTimesheet = () => {
+    navigate("/timesheet");
+  };
+  const handleHomePage = () => {
+    navigate("/home");
+  };
+
   useEffect(() => {
+    console.log("header");
     const u = {
       id: "1",
       firstname: "admin",
@@ -195,7 +237,9 @@ const Header = () => {
             alignItems: "center"
           }}
         >
-          <Button variant="text">Home</Button>
+          <Button variant="text" onClick={handleHomePage}>
+            Home
+          </Button>
           {user?.isAdmin && (
             <div>
               <Button
@@ -234,10 +278,18 @@ const Header = () => {
                           aria-labelledby="composition-button"
                           onKeyDown={handleListKeyDown}
                         >
-                          <MenuItem onClick={handleEmployeeClose}>
+                          <MenuItem
+                            onClick={(e: Event | React.SyntheticEvent) =>
+                              employeeAction("ONBOARD", e)
+                            }
+                          >
                             Onboarding
                           </MenuItem>
-                          <MenuItem onClick={handleEmployeeClose}>
+                          <MenuItem
+                            onClick={(e: Event | React.SyntheticEvent) =>
+                              employeeAction("UPDATE", e)
+                            }
+                          >
                             Update
                           </MenuItem>
                         </MenuList>
@@ -285,15 +337,29 @@ const Header = () => {
                       >
                         {user?.isAdmin && (
                           <>
-                            <MenuItem onClick={handleProjectsClose}>
+                            <MenuItem
+                              onClick={(e: Event | React.SyntheticEvent) =>
+                                handleProjectsActions("NEW", e)
+                              }
+                            >
                               Create new
                             </MenuItem>
-                            <MenuItem onClick={handleProjectsClose}>
+                            <MenuItem
+                              onClick={(e: Event | React.SyntheticEvent) =>
+                                handleProjectsActions("UPDATE", e)
+                              }
+                            >
                               Update
                             </MenuItem>
                           </>
                         )}
-                        <MenuItem onClick={handleProjectsClose}>View</MenuItem>
+                        <MenuItem
+                          onClick={(e: Event | React.SyntheticEvent) =>
+                            handleProjectsActions("VIEW", e)
+                          }
+                        >
+                          View
+                        </MenuItem>
                       </MenuList>
                     </ClickAwayListener>
                   </Paper>
@@ -301,6 +367,9 @@ const Header = () => {
               )}
             </Popper>
           </div>
+          <Button variant="text" onClick={handleTimesheet}>
+            Timesheet
+          </Button>
         </Box>
         <Box
           sx={{
@@ -352,9 +421,14 @@ const Header = () => {
                         aria-labelledby="composition-button"
                         onKeyDown={handleListKeyDown}
                       >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                        <MenuItem
+                          onClick={(e: Event | React.SyntheticEvent) =>
+                            handleMyProfileAction(e)
+                          }
+                        >
+                          My Profile
+                        </MenuItem>
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
                       </MenuList>
                     </ClickAwayListener>
                   </Paper>
