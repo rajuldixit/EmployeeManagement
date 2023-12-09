@@ -15,6 +15,7 @@ import "./App.css";
 import useAuth from "./hooks/useAuth";
 import CustomError from "components/CustomError";
 import LayoutWrapper from "pages/Layouts/Wrapper";
+import Loader from "components/loader";
 
 function App() {
   const { token, isLoggedIn } = useAuth(),
@@ -32,7 +33,7 @@ function App() {
   return (
     <>
       <ErrorBoundary fallback={<CustomError />}>
-        <Suspense fallback={<div>loading...</div>}>
+        <Suspense fallback={<Loader />}>
           <Routes>
             <Route path="/login" element={<Login />} />
 
@@ -43,7 +44,7 @@ function App() {
                   <Route
                     path={route.path}
                     element={
-                      <Suspense fallback={<p>Loading Profile</p>}>
+                      <Suspense fallback={<Loader />}>
                         <route.component />
                       </Suspense>
                     }

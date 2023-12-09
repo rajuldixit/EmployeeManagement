@@ -30,6 +30,7 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { IUser } from "../../../utils/interfaces";
 import { useNavigate } from "react-router-dom";
+import ConfirmDialog from "components/dialogs";
 // import { Search } from "react-router";
 
 const HeaderPaper = styled(Paper)(({ theme }) => ({
@@ -88,6 +89,7 @@ const Header = () => {
   const anchorRef = useRef<HTMLButtonElement>(null);
   const anchorEmpRef = useRef<HTMLButtonElement>(null);
   const anchorProjectsRef = useRef<HTMLButtonElement>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleEmployeeToggle = () => {
@@ -200,12 +202,18 @@ const Header = () => {
     handleClose(e);
   };
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    setConfirmOpen(true);
+  };
   const handleTimesheet = () => {
     navigate("/timesheet");
   };
   const handleHomePage = () => {
     navigate("/home");
+  };
+
+  const handleConfirmLogout = () => {
+    navigate("/login");
   };
 
   useEffect(() => {
@@ -438,6 +446,14 @@ const Header = () => {
           </div>
         </Box>
       </Stack>
+      <ConfirmDialog
+        title="Logout"
+        open={confirmOpen}
+        setOpen={setConfirmOpen}
+        onConfirm={handleConfirmLogout}
+      >
+        Are you sure you want to logout?
+      </ConfirmDialog>
     </HeaderPaper>
   );
 };
