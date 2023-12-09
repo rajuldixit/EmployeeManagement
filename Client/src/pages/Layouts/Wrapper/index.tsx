@@ -1,11 +1,24 @@
 import React, { ReactNode } from "react";
-import bgWall from "../assets/images/bg_wallpaper.jpeg";
-import { Container, Stack } from "@mui/system";
-import Feeds from "./Feeds";
-import Header from "./Header";
-import { Outlet } from "react-router-dom";
+import bgWall from "../../../assets/images/bg_wallpaper.jpeg";
+import { Container, Stack, styled } from "@mui/system";
 
-const AppLayout = () => {
+import { Outlet } from "react-router-dom";
+import Header from "./Header";
+import { Paper } from "@mui/material";
+
+const FeedsPaper = styled(Paper)(({ theme }) => ({
+  width: "100%",
+  height: "80vh",
+  backgroundColor: "rgb(179 179 205 / 75%)",
+  padding: 10,
+  boxSizing: "border-box",
+  border: "1px solid lightgrey"
+}));
+
+interface Props {
+  children: React.ReactNode;
+}
+const LayoutWrapper = () => {
   return (
     <Container maxWidth="xl" sx={boxContainer}>
       <img
@@ -25,7 +38,9 @@ const AppLayout = () => {
       <Stack
         sx={[glass, { marginTop: "60px", position: "absolute", width: "80%" }]}
       >
-        <Outlet />
+        <FeedsPaper variant="elevation">
+          <Outlet />
+        </FeedsPaper>
       </Stack>
     </Container>
   );
@@ -46,4 +61,4 @@ const glass = {
   border: "1px solid rgba(255, 255, 255, 0.18)",
   boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.37)"
 };
-export default AppLayout;
+export default LayoutWrapper;

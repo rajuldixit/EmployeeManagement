@@ -28,7 +28,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import { IUser } from "../utils/interfaces";
+import { IUser } from "../../../utils/interfaces";
 import { useNavigate } from "react-router-dom";
 // import { Search } from "react-router";
 
