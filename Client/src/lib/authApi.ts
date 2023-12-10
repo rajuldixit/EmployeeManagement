@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
 import { IUser, IUserLogin } from "../utils/interfaces";
 import Cookies from "js-cookie";
+import useAuth from "hooks/useAuth";
 
 const useAuthApi = () => {
   const [user, setUser] = useState<IUser | null>(null);
@@ -12,7 +13,7 @@ const useAuthApi = () => {
   const getUser = async (user: IUserLogin) => {
     setActionExecuting(true);
     try {
-      const resp = await axios.post(`${base_url}login`, {
+      const resp = await axios.post(`${base_url}api/login`, {
         email: user.email,
         password: user.password
       });
@@ -31,10 +32,33 @@ const useAuthApi = () => {
       setActionExecuting(false);
     }
   };
+  const logoutUser = async () => {
+    const token = await Cookies.get("accessToken");
+    setActionExecuting(true);
+    try {
+      await axios
+        .post(`${base_url}api/logout`, {
+          token: token
+        })
+        .then((resp) => {
+          Cookies.remove("accessToken");
+          Cookies.remove("refreshToken");
+          setUser(null);
+        });
+    } catch (err) {
+      const error = err as AxiosError;
+      const errorData = error?.response?.data || "error";
+      setErrorMessage(errorData as string);
+    } finally {
+      setActionExecuting(false);
+    }
+  };
+
   return {
     user,
     errorMessage,
-    getUser
+    getUser,
+    logoutUser
   };
 };
 

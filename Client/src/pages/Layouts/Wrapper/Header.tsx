@@ -31,6 +31,7 @@ import { IUser } from "../../../utils/interfaces";
 import { useNavigate } from "react-router-dom";
 import ConfirmDialog from "components/dialogs";
 import { AuthUserContext } from "context/user-context";
+import useAuthApi from "lib/authApi";
 // import { Search } from "react-router";
 
 const HeaderPaper = styled(Paper)(({ theme }) => ({
@@ -92,7 +93,7 @@ const Header = () => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const navigate = useNavigate();
   const { user, setIsAuthenticated, saveUser } = useContext(AuthUserContext);
-
+  const { logoutUser } = useAuthApi();
   const handleEmployeeToggle = () => {
     setEmployeeOpen((prevOpen) => !prevOpen);
   };
@@ -213,22 +214,24 @@ const Header = () => {
     navigate("/");
   };
 
-  const handleConfirmLogout = () => {
-    const defaultUserDetails = {
-      id: "",
-      firstname: "",
-      lastname: "",
-      username: "",
-      email: "",
-      password: "",
-      isAdmin: false,
-      role: ""
-    };
-    setIsAuthenticated(false);
-    saveUser(defaultUserDetails);
-    Cookies.remove("accessToken");
-    Cookies.remove("refreshToken");
-    navigate("/login");
+  const handleConfirmLogout = async () => {
+    await logoutUser()
+      .then((resp) => {
+        const defaultUserDetails = {
+          id: "",
+          firstname: "",
+          lastname: "",
+          username: "",
+          email: "",
+          password: "",
+          isAdmin: false,
+          role: ""
+        };
+        setIsAuthenticated(false);
+        saveUser(defaultUserDetails);
+        navigate("/login");
+      })
+      .catch((e) => console.log(e));
   };
 
   useEffect(() => {
