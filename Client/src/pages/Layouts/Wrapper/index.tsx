@@ -15,9 +15,6 @@ const FeedsPaper = styled(Paper)(({ theme }) => ({
   border: "1px solid lightgrey"
 }));
 
-interface Props {
-  children: React.ReactNode;
-}
 const LayoutWrapper = () => {
   return (
     <Container maxWidth="xl" sx={boxContainer}>

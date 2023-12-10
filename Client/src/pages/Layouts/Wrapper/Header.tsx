@@ -194,7 +194,7 @@ const Header = () => {
     } else if (actionType == "UPDATE") {
       navigate("/updateProject");
     } else if (actionType == "VIEW") {
-      navigate("/viewProject");
+      navigate("/viewProjects");
     }
     handleProjectsClose(e);
   };
