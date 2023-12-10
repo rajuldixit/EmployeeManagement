@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { IUserLogin } from "../../utils/interfaces";
 import useAuthApi from "../../lib/authApi";
@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { Box, Container } from "@mui/system";
 import { Button, TextField, Typography } from "@mui/material";
+import { AuthUserContext } from "context/user-context";
 
 const FormPaper = styled(Paper)(({ theme }) => ({
   width: 520,
@@ -27,6 +28,7 @@ const Login = () => {
       formState: { errors }
     } = useForm<IUserLogin>(),
     { getUser, user, errorMessage } = useAuthApi(),
+    { setIsAuthenticated, saveUser } = useContext(AuthUserContext),
     onSubmit = handleSubmit(async (data: IUserLogin) => {
       await getUser({ email: data.email, password: data.password });
     }),
@@ -34,7 +36,9 @@ const Login = () => {
 
   useEffect(() => {
     if (!!user) {
-      navigate("/home");
+      setIsAuthenticated(true);
+      saveUser(user);
+      navigate("/");
     }
   }, [user, errorMessage]);
 

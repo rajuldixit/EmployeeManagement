@@ -1,11 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Cookies from "js-cookie";
+import { AuthUserContext } from "context/user-context";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const { isAuthenticated } = useContext(AuthUserContext);
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const user = Cookies.get("user");
-    console.log(user);
-  }, []);
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
   return (
     <>
       <div>home</div>

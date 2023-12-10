@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
-// import styled from "@emotion/styled";
 import { styled } from "@mui/material/styles";
 import {
   AppBar,
@@ -31,12 +30,13 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { IUser } from "../../../utils/interfaces";
 import { useNavigate } from "react-router-dom";
 import ConfirmDialog from "components/dialogs";
+import { AuthUserContext } from "context/user-context";
 // import { Search } from "react-router";
 
 const HeaderPaper = styled(Paper)(({ theme }) => ({
   width: "100%",
   height: 50,
-  backgroundColor: "rgb(229 229 237 / 75%)",
+  backgroundColor: "rgb(254 254 255 / 75%)",
   boxSizing: "border-box",
   border: "1px solid lightgrey"
 }));
@@ -82,7 +82,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header = () => {
-  const [user, setUser] = useState<IUser | null>(null);
+  const [userDetails, setUserDetails] = useState<IUser | null>(null);
   const [open, setOpen] = useState(false);
   const [openEmployee, setEmployeeOpen] = useState(false);
   const [openProjects, setProjectsOpen] = useState(false);
@@ -91,6 +91,7 @@ const Header = () => {
   const anchorProjectsRef = useRef<HTMLButtonElement>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const navigate = useNavigate();
+  const { user, setIsAuthenticated, saveUser } = useContext(AuthUserContext);
 
   const handleEmployeeToggle = () => {
     setEmployeeOpen((prevOpen) => !prevOpen);
@@ -209,27 +210,30 @@ const Header = () => {
     navigate("/timesheet");
   };
   const handleHomePage = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   const handleConfirmLogout = () => {
+    const defaultUserDetails = {
+      id: "",
+      firstname: "",
+      lastname: "",
+      username: "",
+      email: "",
+      password: "",
+      isAdmin: false,
+      role: ""
+    };
+    setIsAuthenticated(false);
+    saveUser(defaultUserDetails);
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
     navigate("/login");
   };
 
   useEffect(() => {
-    console.log("header");
-    const u = {
-      id: "1",
-      firstname: "admin",
-      lastname: "admin",
-      username: "admin",
-      email: "admin@gmail.com",
-      password: "$2b$10$J6adca0BQ4i76BsthXZ95.ymejaha/AaOaDknOY7YOSbaMHvKz2Rm",
-      isAdmin: true,
-      role: "ADMIN"
-    };
-    setUser(u);
-  }, []);
+    if (!!user) setUserDetails(user);
+  }, [user]);
   return (
     <HeaderPaper variant="elevation">
       <Stack
@@ -400,7 +404,7 @@ const Header = () => {
               aria-haspopup="true"
               onClick={handleToggle}
             >
-              user
+              {userDetails?.firstname}
               <IconButton>
                 <AccountCircle />
               </IconButton>

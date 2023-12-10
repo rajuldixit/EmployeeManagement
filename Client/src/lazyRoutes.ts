@@ -12,7 +12,7 @@ const UpdateProject = React.lazy(
 const ViewProjects = React.lazy(() => import("./pages/Projects/ViewProjects"));
 const Timesheet = React.lazy(() => import("./pages/Timesheet/Timesheet"));
 
-const routes = [
+const lazyRoutes = [
   {
     enabled: true,
     path: "/home",
@@ -71,4 +71,4 @@ const routes = [
   }
 ];
 
-export default routes.filter((route) => route.enabled);
+export default lazyRoutes.filter((route) => route.enabled);
