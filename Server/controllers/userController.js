@@ -1,6 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+
+const {
+  generateAccessToken,
+  generateRefreshToken
+} = require("./tokenController");
 
 let refreshTokens = [];
 const users = [
@@ -26,26 +30,14 @@ const users = [
   }
 ];
 
-const generateAccessToken = (user) => {
-  return jwt.sign({ id: user.id, isAdmin: user.isAdmin }, "mySecretKey", {
-    expiresIn: "5s"
-  });
-};
-
-const generateRefreshToken = (user) => {
-  return jwt.sign({ id: user.id, isAdmin: user.isAdmin }, "myRefreshSecretKey");
-};
-
 // @desc POST User Login
 // @route POST /
 // @access Private
 const userLogin = async (req, res) => {
-  console.log("req =============", req.body);
   const { email, password } = req.body;
   const user = users.find((u) => {
     return u.email === email;
   });
-  console.log("user", req.body);
   if (user == null) {
     return res.status(404).json("No user with that email");
   }
@@ -71,7 +63,11 @@ const userLogin = async (req, res) => {
 // @desc POST User Login
 // @route POST /
 // @access Private
-const userLogout = asyncHandler(async (req, res) => {});
+const userLogout = asyncHandler(async (req, res) => {
+  const refreshToken = req.body.token;
+  refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
+  res.status(200).json("You logged out successfully.");
+});
 
 module.exports = {
   userLogin,

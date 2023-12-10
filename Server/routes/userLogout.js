@@ -1,13 +1,7 @@
 const express = require("express");
+const { userLogout } = require("../controllers/userController");
 const router = express.Router();
 
-router.delete("/", (req, res, next) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/login");
-  });
-});
+router.route("/").post(userLogout);
 
 module.exports = router;
