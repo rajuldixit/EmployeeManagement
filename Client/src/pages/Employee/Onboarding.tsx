@@ -1,144 +1,109 @@
-import {
-  Stack,
-  TextField,
-  Button,
-  Typography,
-  Container,
-  Paper,
-  styled,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent
-} from "@mui/material";
-import React from "react";
-import { useForm } from "react-hook-form";
+import { Button, Container, Stack, Typography } from "@mui/material";
+import FormDropdown from "components/FormComponents/FormDropdown";
+import FormInput from "components/FormComponents/FormInput";
+import React, { useEffect } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { INewEmployee } from "utils/interfaces";
 
-const FormPaper = styled(Paper)(({ theme }) => ({
-  width: 520,
-  height: 400,
-  backgroundColor: "rgba(255, 255, 255, 0.13)",
-  padding: 10,
-  boxSizing: "border-box",
-  border: "1px solid lightgrey"
-}));
+const defaultValues = {
+  firstname: "",
+  lastname: "",
+  email: "",
+  userType: "",
+  gender: "",
+  city: "",
+  country: "",
+  postcode: "",
+  street: "",
+  dob: new Date(),
+  countryCode: "",
+  phoneNumber: "",
+  role: "",
+  jobType: ""
+};
+const RoleOptions = [
+  { value: 1, name: "Developer" },
+  { value: 2, name: "Tester" }
+];
 
-interface IEmployeeForm {
-  firstname: string;
-  lastname: string;
-  username: string;
-  email: string;
-  role: string;
-  gender: string;
-}
+const JobTypeOptions = [
+  { value: 1, name: "Permanent" },
+  { value: 2, name: "Contract" }
+];
 
 const Onboarding = () => {
+  const methods = useForm<INewEmployee>({ defaultValues: defaultValues });
   const {
-      register,
-      handleSubmit,
-      watch,
-      formState: { errors }
-    } = useForm<IEmployeeForm>(),
-    onSubmit = handleSubmit(async (data: IEmployeeForm) => {
-      // await getUser({ email: data.email, password: data.password });
-    });
-  const [role, setRole] = React.useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setRole(event.target.value as string);
-  };
-  const [gender, setGender] = React.useState("");
-
-  const handleGenderChange = (event: SelectChangeEvent) => {
-    setGender(event.target.value as string);
-  };
+    handleSubmit,
+    reset,
+    control,
+    setValue,
+    watch,
+    formState: { errors }
+  } = methods;
+  const onSubmit = (data: INewEmployee) => console.log(data);
   return (
     <>
       <Typography textAlign={"center"} variant="h5">
         New Employee Onboarding
       </Typography>
-      <Container
-        maxWidth="xl"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          // alignItems: "center",
-          height: "100%"
-        }}
-      >
-        <FormPaper variant="elevation">
-          <form onSubmit={onSubmit}>
-            <Stack p={2} flexDirection={"row"}>
-              <TextField
-                required
-                type="firstname"
-                label="Firstname"
-                defaultValue="Firstname"
-                {...register("firstname")}
-              />
-              <TextField
-                required
-                type="lastname"
-                label="Lastname"
-                defaultValue="Lastname"
-                {...register("lastname")}
-              />
-            </Stack>
-            <Stack p={2} flexDirection={"row"}>
-              <TextField
-                required
-                type="username"
-                label="Username"
-                defaultValue="Username"
-                {...register("username")}
-              />
-              <TextField
-                required
-                type="email"
-                label="Email"
-                defaultValue="Email"
-                {...register("email")}
-              />
-            </Stack>
-            <Stack flexDirection={"row"}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Role</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={role}
-                  label="Role"
-                  onChange={handleChange}
-                >
-                  <MenuItem value={10}>Admin</MenuItem>
-                  <MenuItem value={20}>Employee</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={gender}
-                  label="Gender"
-                  onChange={handleGenderChange}
-                >
-                  <MenuItem value={10}>Male</MenuItem>
-                  <MenuItem value={20}>Female</MenuItem>
-                </Select>
-              </FormControl>
-            </Stack>
-            <Stack p={2} flexDirection={"row"} justifyContent={"center"}>
-              <Button type="button" variant="outlined">
-                Cancel
-              </Button>
-              <Button type="submit" variant="contained">
-                Register
-              </Button>
-            </Stack>
-          </form>
-        </FormPaper>
+      <Container maxWidth="sm">
+        <FormProvider {...methods}>
+          <Stack
+            flexDirection={"row"}
+            justifyContent={"space-between"}
+            sx={{ marginBottom: "4px" }}
+          >
+            <FormInput
+              name="firstname"
+              control={control}
+              label="First name"
+              errors={errors}
+            />
+            <FormInput
+              name="lastname"
+              control={control}
+              label="Last name"
+              errors={errors}
+            />
+          </Stack>
+          <Stack flexDirection={"row"}>
+            <FormInput
+              name="email"
+              control={control}
+              label="Email"
+              errors={errors}
+              fullwidth={true}
+              type={"email"}
+            />
+          </Stack>
+          <Stack flexDirection={"row"}>
+            <FormDropdown
+              name="role"
+              control={control}
+              label="Role"
+              errors={errors}
+              options={RoleOptions}
+            />
+            <FormDropdown
+              name="jobType"
+              control={control}
+              label="Job Type"
+              errors={errors}
+              options={JobTypeOptions}
+            />
+          </Stack>
+          <Stack></Stack>
+
+          <Button onClick={handleSubmit(onSubmit)} variant={"contained"}>
+            {" "}
+            Submit{" "}
+          </Button>
+          <Button onClick={() => reset()} variant={"outlined"}>
+            {" "}
+            Reset{" "}
+          </Button>
+        </FormProvider>
       </Container>
     </>
   );

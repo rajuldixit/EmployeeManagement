@@ -2,7 +2,6 @@ import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
 import { IUser, IUserLogin } from "../utils/interfaces";
 import Cookies from "js-cookie";
-import useAuth from "hooks/useAuth";
 
 const useAuthApi = () => {
   const [user, setUser] = useState<IUser | null>(null);

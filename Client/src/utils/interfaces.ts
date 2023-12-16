@@ -13,3 +13,20 @@ export interface IUserLogin {
   email: string;
   password: string;
 }
+
+export interface INewEmployee {
+  firstname: string;
+  lastname: string;
+  email: string;
+  userType: string;
+  gender: string;
+  city: string;
+  country: string;
+  postcode: string;
+  street: string;
+  dob: Date;
+  countryCode: string;
+  phoneNumber: string;
+  role: string;
+  jobType: string;
+}

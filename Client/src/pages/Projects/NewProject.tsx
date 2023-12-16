@@ -11,6 +11,7 @@ import {
   Paper,
   styled
 } from "@mui/material";
+import FormTextArea from "components/FormComponents/FormTextArea";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -38,8 +39,10 @@ const NewProject = () => {
       formState: { errors }
     } = useForm<INewProject>(),
     onSubmit = handleSubmit(async (data: INewProject) => {
+      console.log(data);
       // await getUser({ email: data.email, password: data.password });
     });
+  const onDescriptionChange = () => {};
   return (
     <>
       <Typography textAlign={"center"} variant="h5">
@@ -89,13 +92,18 @@ const NewProject = () => {
               />
             </Stack>
             <Stack flexDirection={"row"}>
-              <TextField
+              <FormTextArea
+                label={"Description"}
+                placeholder="Description"
+                {...register("description")}
+              />
+              {/* <TextField
                 required
                 type="description"
                 label="Description"
                 defaultValue="Description"
                 {...register("description")}
-              />
+              /> */}
             </Stack>
             <Stack p={2} flexDirection={"row"} justifyContent={"center"}>
               <Button type="button" variant="outlined">
