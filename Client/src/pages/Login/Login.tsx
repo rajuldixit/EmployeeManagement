@@ -25,7 +25,7 @@ const Login = () => {
       register,
       handleSubmit,
       watch,
-      formState: { errors }
+      formState: { errors, isDirty, isValid }
     } = useForm<IUserLogin>(),
     { getUser, user, errorMessage } = useAuthApi(),
     { setIsAuthenticated, saveUser } = useContext(AuthUserContext),
@@ -51,24 +51,31 @@ const Login = () => {
         <form onSubmit={onSubmit}>
           <Stack p={2}>
             <TextField
+              data-cy="email-field"
               required
               type="email"
               label="Email"
-              defaultValue="Email"
+              defaultValue=""
               {...register("email")}
             />
           </Stack>
           <Stack p={2}>
             <TextField
               required
+              data-cy="password-field"
               type="password"
               label="Password"
-              defaultValue="Password"
+              defaultValue=""
               {...register("password")}
             />
           </Stack>
           <Stack p={2}>
-            <Button type="submit" variant="contained">
+            <Button
+              type="submit"
+              variant="contained"
+              data-cy="sign-in"
+              disabled={!isDirty || !isValid}
+            >
               Sign in
             </Button>
           </Stack>
@@ -78,7 +85,11 @@ const Login = () => {
             </Button>
           </Stack>
           {errorMessage && (
-            <Typography textAlign={"center"} color={"red"}>
+            <Typography
+              textAlign={"center"}
+              color={"red"}
+              data-cy="error-message"
+            >
               {errorMessage}
             </Typography>
           )}
