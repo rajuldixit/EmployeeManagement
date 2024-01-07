@@ -5,6 +5,8 @@ import { Container, Stack, styled } from "@mui/system";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import { Paper } from "@mui/material";
+import SideNav from "components/SideNav/index";
+import { AuthUserProvider } from "context/user-context";
 
 const FeedsPaper = styled(Paper)(({ theme }) => ({
   width: "100%",
@@ -17,29 +19,73 @@ const FeedsPaper = styled(Paper)(({ theme }) => ({
 
 const LayoutWrapper = () => {
   return (
-    <Container maxWidth="xl" sx={boxContainer}>
-      <img
-        style={{
-          position: "absolute",
-          left: "0",
-          top: "0",
-          width: "99.7vw",
-          height: "99.7vh"
+    <>
+      {/* <AppContextProvider> */}
+      {/* <AuthUserProvider> */}
+      <Container
+        sx={{
+          display: { xs: "block", sm: "flex" },
+          padding: "0 !important",
+          width: "100%",
+          overflow: "hidden",
+          margin: "0",
+          height: { sm: "100vh" },
+          maxWidth: "1920px !important"
         }}
-        src={bgWall}
-        alt=""
-      />
-      <Stack sx={[glass, { position: "absolute", width: "80%" }]}>
-        <Header />
-      </Stack>
-      <Stack
-        sx={[glass, { marginTop: "60px", position: "absolute", width: "80%" }]}
       >
-        <FeedsPaper variant="elevation">
+        <Stack
+          sx={{
+            width: { xs: "100%", sm: "30%", md: "28%", lg: "18%" },
+            padding: "10px",
+            height: { sm: "96vh" },
+            boxSizing: "border-box"
+          }}
+        >
+          <SideNav />
+        </Stack>
+        <Stack
+          sx={{
+            width: { xs: "100%", sm: "70%", md: "72%", lg: "82%" },
+            padding: {
+              xs: "10px",
+              sm: "10px 2%",
+              md: "10px 2%",
+              lg: "10px 5%"
+            },
+            overflowY: "scroll",
+            boxSizing: "border-box"
+          }}
+        >
+          {/* <Header /> */}
           <Outlet />
-        </FeedsPaper>
-      </Stack>
-    </Container>
+        </Stack>
+      </Container>
+      {/* </AuthUserProvider> */}
+      {/* </AppContextProvider> */}
+    </>
+    // <Container maxWidth="xl" sx={boxContainer}>
+    //   <img
+    //     style={{
+    //       position: "absolute",
+    //       left: "0",
+    //       top: "0",
+    //       width: "99.7vw",
+    //       height: "99.7vh"
+    //     }}
+    //     src={bgWall}
+    //     alt=""
+    //   />
+    //   <Stack sx={[glass, { position: "absolute", width: "80%" }]}>
+    //     <Header />
+    //   </Stack>
+    //   <Stack
+    //     sx={[glass, { marginTop: "60px", position: "absolute", width: "80%" }]}
+    //   >
+    //     <FeedsPaper variant="elevation">
+    //       <Outlet />
+    //     </FeedsPaper>
+    //   </Stack>
+    // </Container>
   );
 };
 const boxContainer = {

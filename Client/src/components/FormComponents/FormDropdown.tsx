@@ -50,10 +50,8 @@ const FormDropdown: React.FC<Props> = ({
           formState
         }) => (
           <Select value={value} onChange={(_, newValue) => onChange(newValue)}>
-            {/* <Option value={1}>hi</Option>
-            <Option value={2}>hello</Option> */}
             <Option value={null} disabled>
-              Select
+              {label}
             </Option>
             {generateSingleOptions()}
           </Select>

@@ -77,6 +77,55 @@ const Onboarding = () => {
               type={"email"}
             />
           </Stack>
+
+          <Stack flexDirection={"row"}>
+            <FormInput
+              name="house No"
+              control={control}
+              label="House No"
+              errors={errors}
+              type={"house No"}
+            />
+            <FormInput
+              name="street"
+              control={control}
+              label="Street"
+              errors={errors}
+              type={"street"}
+            />
+          </Stack>
+          <Stack flexDirection={"row"}>
+            <FormDropdown
+              name="country"
+              control={control}
+              label="Country"
+              errors={errors}
+              options={RoleOptions}
+            />
+            <FormDropdown
+              name="city"
+              control={control}
+              label="City"
+              errors={errors}
+              options={JobTypeOptions}
+            />
+          </Stack>
+          <Stack flexDirection={"row"}>
+            <FormInput
+              name="zipcode"
+              control={control}
+              label="Zipcode"
+              errors={errors}
+              type={"zipcode"}
+            />
+            <FormInput
+              name="phone"
+              control={control}
+              label="Phone"
+              errors={errors}
+              type={"phone"}
+            />
+          </Stack>
           <Stack flexDirection={"row"}>
             <FormDropdown
               name="role"

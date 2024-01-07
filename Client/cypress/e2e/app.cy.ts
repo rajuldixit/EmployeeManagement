@@ -1,6 +1,6 @@
 describe("Login Form", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/login");
+    cy.visit("http://localhost:3001/login");
     cy.contains("Login");
   });
   it("has login button disabled", () => {
