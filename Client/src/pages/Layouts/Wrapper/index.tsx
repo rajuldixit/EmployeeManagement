@@ -5,8 +5,9 @@ import { Container, Stack, styled } from "@mui/system";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import { Paper } from "@mui/material";
-import SideNav from "components/SideNav/index";
+import SideNav from "components/NavPanels/SideNav/index";
 import { AuthUserProvider } from "context/user-context";
+import HeaderPanel from "components/NavPanels/TopNav/index";
 
 const FeedsPaper = styled(Paper)(({ theme }) => ({
   width: "100%",
@@ -56,7 +57,7 @@ const LayoutWrapper = () => {
             boxSizing: "border-box"
           }}
         >
-          {/* <Header /> */}
+          <HeaderPanel />
           <Outlet />
         </Stack>
       </Container>
