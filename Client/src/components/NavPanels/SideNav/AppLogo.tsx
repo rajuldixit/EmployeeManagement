@@ -9,7 +9,7 @@ const AppLogo = () => {
         background: "#d986d9",
         borderRadius: "8px",
         color: "#fff",
-        padding: "20px 10px"
+        padding: "44px 10px"
       }}
     >
       <Typography textAlign={"center"}>{AppName}</Typography>

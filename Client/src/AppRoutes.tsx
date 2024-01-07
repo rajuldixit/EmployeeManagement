@@ -18,18 +18,37 @@ const AppRoutes = () => {
 
           <Route element={<LayoutWrapper />}>
             <Route path="/" element={<Home />} />
+
             {lazyRoutes &&
-              lazyRoutes.map((route) => (
-                <Route
-                  path={route.path}
-                  element={
-                    <Suspense fallback={<Loader />}>
-                      <route.component />
-                    </Suspense>
-                  }
-                  key={route.path}
-                />
-              ))}
+              lazyRoutes.map((route) => {
+                return (
+                  <Route
+                    path={route.path}
+                    element={
+                      <Suspense fallback={<Loader />}>
+                        <route.component />
+                      </Suspense>
+                    }
+                    key={route.path}
+                  >
+                    {route.child &&
+                      route.child.map((child, index) => {
+                        return (
+                          <Route
+                            path={child.path}
+                            key={index}
+                            element={
+                              <Suspense fallback={<Loader />}>
+                                <child.component />
+                              </Suspense>
+                            }
+                          />
+                        );
+                      })}
+                  </Route>
+                );
+              })}
+
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>

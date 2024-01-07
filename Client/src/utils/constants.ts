@@ -1,43 +1,57 @@
 export const AppName = "Human Resources";
 export const NavPanelsKeys = {
-  Home: { key: "home", label: "Homepage" },
+  Home: { key: "home", label: "Homepage", urlLink: "/" },
   Projects: {
     key: "projects",
     label: "Projects",
+    urlLink: "/project",
     subMenu: [
       {
         key: "addProject",
-        label: "Add New Project"
+        label: "Add New Project",
+        urlLink: "/addNew",
+        isActive: false
       },
       {
         key: "updateProject",
-        label: "Update Project"
+        label: "Update Project",
+        urlLink: "/update",
+        isActive: false
       },
       {
         key: "view",
-        label: "View"
+        label: "View",
+        urlLink: "/view",
+        isActive: false
       }
     ]
   },
   Employees: {
     key: "employees",
     label: "Employees",
+    urlLink: "/employee",
     subMenu: [
       {
         key: "addEmployee",
-        label: "Onboard Employee"
+        label: "Onboard Employee",
+        urlLink: "/onboarding",
+        isActive: false
       },
       {
         key: "updateEmployee",
-        label: "Update Employee"
+        label: "Update Employee",
+        urlLink: "/update",
+        isActive: false
       },
       {
         key: "view",
-        label: "View"
+        label: "View",
+        urlLink: "/view",
+        isActive: false
       }
     ]
   },
-  Settings: { key: "settings", label: "Settings" }
+  Settings: { key: "settings", label: "Settings", urlLink: "/settings" }
 };
 
 export enum ButtonCategories {

@@ -13,6 +13,7 @@ import {
   appColors
 } from "utils/constants";
 import CustomButton from "components/Buttons/CustomButton";
+import { useNavigate } from "react-router-dom";
 
 const LeftNavPaper = styled(Paper)(({ theme }) => ({
   width: "100%",
@@ -29,6 +30,8 @@ const LeftNavPaper = styled(Paper)(({ theme }) => ({
 interface SubMenu {
   key: string;
   label: string;
+  isActive: boolean;
+  urlLink: string;
 }
 interface INavItem {
   key: string;
@@ -37,27 +40,31 @@ interface INavItem {
   style?: { position: string; bottom: string };
   isActive: boolean;
   subMenu?: Array<SubMenu>;
+  urlLink: string;
 }
 const defaultNavItems: INavItem[] = [
   {
     key: NavPanelsKeys.Home.key,
     title: NavPanelsKeys.Home.label,
     icon: HomeIcon,
-    isActive: true
+    isActive: true,
+    urlLink: NavPanelsKeys.Home.urlLink
   },
   {
     key: NavPanelsKeys.Projects.key,
     title: NavPanelsKeys.Projects.label,
     icon: AutoStoriesIcon,
     isActive: false,
-    subMenu: NavPanelsKeys.Projects.subMenu
+    subMenu: NavPanelsKeys.Projects.subMenu,
+    urlLink: NavPanelsKeys.Projects.urlLink
   },
   {
     key: NavPanelsKeys.Employees.key,
     title: NavPanelsKeys.Employees.label,
     icon: PeopleIcon,
     isActive: false,
-    subMenu: NavPanelsKeys.Employees.subMenu
+    subMenu: NavPanelsKeys.Employees.subMenu,
+    urlLink: NavPanelsKeys.Employees.urlLink
   },
   {
     key: NavPanelsKeys.Settings.key,
@@ -67,7 +74,8 @@ const defaultNavItems: INavItem[] = [
       position: "absolute",
       bottom: "12px"
     },
-    isActive: false
+    isActive: false,
+    urlLink: NavPanelsKeys.Settings.urlLink
   }
 ];
 
@@ -75,8 +83,19 @@ const LeftPanel = () => {
   const [navItems, setNavItems] = useState<INavItem[]>(defaultNavItems);
   const [openProject, setOpenProject] = useState(false);
   const [openEmployee, setOpenEmployee] = useState(false);
-  const onSelectNavOption = (key: string) => {
+  const navigate = useNavigate();
+
+  const onSelectNavOption = (
+    key: string,
+    parentUrl?: string,
+    childUrl?: string
+  ) => {
+    console.log(key);
     updateActiveItem(key);
+    console.log(`${parentUrl}${childUrl}`);
+    if (!!parentUrl && !!childUrl) {
+      navigate(`${parentUrl}${childUrl}`);
+    }
   };
   const updateActiveItem = (key: string) => {
     setNavItems((prev) => {
@@ -90,17 +109,18 @@ const LeftPanel = () => {
       });
     });
   };
-  const handleOpen = (key: string) => {
+  const handleOpen = (key: string, urllink?: string) => {
     updateActiveItem(key);
     if (key == NavPanelsKeys.Employees.key) setOpenEmployee(!openEmployee);
     else if (key == NavPanelsKeys.Projects.key) setOpenProject(!openProject);
+    navigate(`${urllink}`);
   };
   return (
     <LeftNavPaper>
       {navItems.map((item) => (
         <>
           <Stack
-            onClick={() => handleOpen(item.key)}
+            onClick={() => handleOpen(item.key, item.urlLink)}
             component={"div"}
             flexDirection={"row"}
             justifyContent={"space-between"}
@@ -171,7 +191,9 @@ const LeftPanel = () => {
                   <CustomButton
                     key={menu.key}
                     label={menu.label}
-                    onClick={() => onSelectNavOption(menu.key)}
+                    onClick={() =>
+                      onSelectNavOption(menu.key, item.urlLink, menu.urlLink)
+                    }
                     style={{
                       color: appColors.grey2
                     }}
@@ -189,7 +211,9 @@ const LeftPanel = () => {
                   <CustomButton
                     key={menu.key}
                     label={menu.label}
-                    onClick={() => onSelectNavOption(menu.key)}
+                    onClick={() =>
+                      onSelectNavOption(menu.key, item.urlLink, menu.urlLink)
+                    }
                     style={{
                       color: appColors.grey2
                     }}
